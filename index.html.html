@@ -1,0 +1,531 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WAGMI - Access Restricted</title>
+    <style>
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @keyframes scrollReverse {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-5px) rotate(-1deg); }
+            75% { transform: translateY(-8px) rotate(0.5deg); }
+        }
+        
+        @keyframes logoTimedShrinkExpand {
+            0% { transform: scale(1); }      /* 8.3s - logo appears full size */
+            2.625% { transform: scale(0.7); } /* 9.175s - logo shrinks 25% slower (0.875s after appearance) */
+            97.9% { transform: scale(0.7); }/* 40s - logo still small */
+            100% { transform: scale(1); }   /* Video end - logo expands back */
+        }
+        
+        .volume-control {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: rgb(255, 215, 0);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: rgb(255, 215, 0);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .volume-icon {
+            color: rgb(255, 215, 0);
+            font-size: 16px;
+        }
+        
+        #confirmBtn {
+            transition: transform 0.1s ease-out;
+        }
+        
+        #confirmBtn:active {
+            transform: scale(0.95) translateY(2px);
+        }
+        
+        @keyframes buttonPress {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(0.92) translateY(3px); }
+            100% { transform: scale(0.95) translateY(2px); }
+        }
+        
+        #confirmBtn.pressed {
+            animation: buttonPress 0.15s ease-out;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            /* Reset any problematic transforms on mobile */
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Access Screen Mobile */
+            #accessScreen {
+                gap: 20px !important;
+                padding: 20px !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+            }
+            
+            #accessScreen > div:last-child {
+                height: auto !important;
+                gap: 20px !important;
+                max-width: 100% !important;
+            }
+            
+            #accessScreen img[src*="doyouwanttomakeit"] {
+                max-width: 85% !important;
+                margin-bottom: 20px !important;
+                height: auto !important;
+            }
+            
+            #confirmBtn {
+                max-width: 100% !important;
+            }
+            
+            #confirmBtn img {
+                max-width: 220px !important;
+                margin-top: -40px !important;
+                height: auto !important;
+            }
+            
+            /* Main Content Mobile */
+            #mainContent {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
+            }
+            
+            /* Main Video Mobile */
+            #mainVideo {
+                display: none !important;
+            }
+            
+            #mainVideoMobile {
+                display: block !important;
+                width: 100% !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+                object-fit: cover !important;
+            }
+            
+            /* WAGMI Logo Mobile */
+            #wagmiLogo {
+                max-width: 220px !important;
+                transform: none !important;
+            }
+            
+            /* Main content container mobile */
+            div[style*="height:945px"] {
+                height: 100vh !important;
+                max-height: 100vh !important;
+            }
+            
+            div[style*="transform: translate3d"] {
+                transform: none !important;
+                height: 100vh !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            
+            /* Volume Control Mobile */
+            .volume-control {
+                top: 20px !important;
+                right: 15px !important;
+                padding: 12px !important;
+                gap: 8px !important;
+                transform: scale(0.9) !important;
+            }
+            
+            .volume-slider {
+                width: 70px !important;
+            }
+            
+            .volume-icon {
+                font-size: 14px !important;
+            }
+            
+            #volumePercent {
+                font-size: 10px !important;
+            }
+            
+            /* Scroll Text Mobile */
+            div[style*="top:0px"], div[style*="bottom:0px"] {
+                height: 30px !important;
+                font-size: 12px !important;
+            }
+            
+            div[style*="top:0px"] span,
+            div[style*="bottom:0px"] span {
+                padding: 5px 15px !important;
+                font-size: 11px !important;
+                letter-spacing: 1px !important;
+            }
+            
+            /* Footer Mobile */
+            footer {
+                bottom: 40px !important;
+                min-width: 280px !important;
+                padding: 8px 12px !important;
+                transform: translateX(-50%) scale(0.9) !important;
+            }
+            
+            footer a {
+                width: 44px !important;
+                height: 44px !important;
+                border-radius: 8px !important;
+            }
+            
+            footer img {
+                width: 30px !important;
+                height: 30px !important;
+            }
+            
+            footer > div > div {
+                gap: 10px !important;
+                padding: 0px 6px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small mobile adjustments */
+            #accessScreen {
+                gap: 15px !important;
+                padding: 15px !important;
+            }
+            
+            #accessScreen img[src*="doyouwanttomakeit"] {
+                max-width: 90% !important;
+            }
+            
+            #confirmBtn img {
+                max-width: 180px !important;
+                margin-top: -30px !important;
+            }
+            
+            #wagmiLogo {
+                max-width: 200px !important;
+            }
+            
+            .volume-control {
+                top: 15px !important;
+                right: 10px !important;
+                padding: 8px !important;
+                transform: scale(0.8) !important;
+            }
+            
+            footer {
+                min-width: 260px !important;
+                bottom: 30px !important;
+                transform: translateX(-50%) scale(0.8) !important;
+            }
+            
+            footer a {
+                width: 38px !important;
+                height: 38px !important;
+            }
+            
+            footer img {
+                width: 26px !important;
+                height: 26px !important;
+            }
+            
+            div[style*="top:0px"] span,
+            div[style*="bottom:0px"] span {
+                font-size: 10px !important;
+                padding: 4px 12px !important;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            /* Very small mobile adjustments */
+            #accessScreen img[src*="doyouwanttomakeit"] {
+                max-width: 95% !important;
+            }
+            
+            #confirmBtn img {
+                max-width: 160px !important;
+            }
+            
+            #wagmiLogo {
+                max-width: 180px !important;
+            }
+            
+            footer {
+                min-width: 240px !important;
+                transform: translateX(-50%) scale(0.75) !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="cursor: auto;font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;background-color:rgb(0, 0, 0);color:rgb(255, 255, 255);line-height:24px;-webkit-font-smoothing:antialiased;overflow:hidden;min-height:stretch;margin:0px;padding:0px;box-sizing:border-box;">
+    
+    <!-- Access screen (shown initially) -->
+    <div id="accessScreen" style="position:fixed;inset:0px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;z-index:100;transition:0.8s cubic-bezier(0.4, 0, 0.2, 1);padding:32px;min-height:945px;height:945px;width: 100vw;background-color:rgb(17, 24, 39);overflow:hidden;will-change:opacity, transform;margin:0px;box-sizing:border-box;">
+        <div style="position:absolute;inset:0px;z-index:-1;overflow:hidden;margin:0px;padding:0px;box-sizing:border-box;">
+            <video id="accessVideo" playsinline muted preload="auto" style="display:block;position:absolute;width: 100%;height:100%;object-fit:cover;margin:0px;padding:0px;box-sizing:border-box;">
+                <source src="https://github.com/charliekarlsson/unknown/raw/refs/heads/main/porschewithaudiomp4.mp4" type="video/mp4" style="margin:0px;padding:0px;box-sizing:border-box;" />
+            </video>
+            <div style="position:absolute;inset:0px;background-color:rgba(0, 0, 0, 0.3);margin:0px;padding:0px;box-sizing:border-box;"></div>
+        </div>
+        <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:32px;width: 100%;height:881px;justify-content:center;margin:0px;padding:0px;box-sizing:border-box;">
+            <img src="https://github.com/charliekarlsson/unknown/blob/main/doyouwanttomakeit.png?raw=true" alt="Access Restricted" loading="eager" style="max-width:500px;margin-bottom:32px;width: 100%;height: auto;object-fit:contain;transform:matrix(1, 0, 0, 1, 0, 0);margin:0px 0px 32px;padding:0px;box-sizing:border-box;" />
+            <button id="confirmBtn" onclick="enterSite();" style="background:none;border:none;padding:0;cursor:pointer;">
+                <img src="https://github.com/charliekarlsson/unknown/blob/main/yes.png?raw=true" alt="Confirm Button" loading="eager" style="position:relative;max-width:300px;cursor:pointer;margin-top:-60px;will-change:transform;z-index:102;transform:matrix(1, 0, 0, 1, 0, 0);transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);width: 100%;height: auto;object-fit:contain;margin:-60px 0px 0px;box-sizing:border-box;" />
+            </button>
+        </div>
+    </div>
+
+    <!-- Main page content (hidden initially) -->
+    <div id="mainContent" style="display: none; position: fixed; inset: 0; z-index: 50; opacity: 0; transition: opacity 1s ease-in-out;">
+        <div style="position:absolute;inset:0px;z-index:-1;overflow:hidden;margin:0px;padding:0px;box-sizing:border-box;">
+            <video id="mainVideo" loop playsinline muted preload="auto" style="display:block;position:absolute;width: 100%;height:1045px;object-fit:cover;transform:matrix(1, 0, 0, 1, 0, 0);margin:0px;padding:0px;box-sizing:border-box;">
+                <source src="https://github.com/charliekarlsson/unknown/raw/refs/heads/main/revisedmp4.mp4" type="video/mp4" media="(min-width: 769px)" style="margin:0px;padding:0px;box-sizing:border-box;" />
+            </video>
+            <video id="mainVideoMobile" loop playsinline muted preload="auto" style="display:none;position:absolute;width: 100%;height:100%;object-fit:cover;transform:none;margin:0px;padding:0px;box-sizing:border-box;">
+                <source src="https://github.com/charliekarlsson/unknown/raw/refs/heads/main/revisedmp4.mp4" type="video/mp4" media="(max-width: 768px)" style="margin:0px;padding:0px;box-sizing:border-box;" />
+            </video>
+            <div style="position:absolute;inset:0px;background-color:rgba(0, 0, 0, 0.15);margin:0px;padding:0px;box-sizing:border-box;"></div>
+        </div>
+        <div style="transform: translate3d(-3.19531px, -4.37302px, 15px) rotateX(-0.583069deg) rotateY(0.426042deg);position:relative;z-index:10;text-align:center;padding:0px 16px;transform-style:preserve-3d;transition:transform 0.2s ease-out;display:flex;flex-direction:column;justify-content:center;align-items:center;height:945px;will-change:transform;margin:0px;box-sizing:border-box;">
+            <img id="wagmiLogo" src="https://github.com/charliekarlsson/unknown/blob/main/We%E2%80%99re%20all%20going%20to%20make%20it%20bros.png?raw=true" alt="WAGMI Logo" loading="eager" style="--logo-scale: 1.1034346101485186;max-width:400px;width: 100%;height: auto;transform:matrix(1.10343, 0, 0, 1.10343, 0.999336, -0.999336);transition:transform 0.2s ease-out;will-change:transform;animation:6s ease-in-out 0s infinite normal none running floatLogo;cursor:pointer;margin:0px;padding:0px;box-sizing:border-box;opacity:0;transition:opacity 1s ease-in-out;" />
+        </div>
+        
+        <!-- Volume Control -->
+        <div id="volumeControl" class="volume-control" style="display: none;">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="100">
+            <span id="volumePercent" style="color: rgb(255, 215, 0); font-size: 12px; font-weight: bold;">100%</span>
+        </div>
+        
+        <!-- Top infinite scroll text -->
+        <div role="button" tabindex="0" aria-label="Click to copy text" style="top:0px;border-bottom:1px solid rgba(255, 215, 0, 0.2);position:fixed;width: 100%;height:40px;background:rgba(0, 0, 0, 0.8) none repeat scroll 0% 0% / auto padding-box border-box;overflow:hidden;z-index:1000;backdrop-filter:blur(8px);cursor:pointer;transition:background-color 0.3s;margin:0px;padding:0px;box-sizing:border-box;">
+            <div style="display:flex;white-space:nowrap;animation:20s linear 0s infinite normal none running scroll;will-change:transform;margin:0px;padding:0px;box-sizing:border-box;">
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span> 
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+            </div>
+        </div>
+        
+        <!-- Bottom scroll text -->
+        <div role="button" tabindex="0" aria-label="Click to copy text" style="bottom:0px;border-top:1px solid rgba(255, 215, 0, 0.2);position:fixed;width: 100%;height:40px;background:rgba(0, 0, 0, 0.8) none repeat scroll 0% 0% / auto padding-box border-box;overflow:hidden;z-index:1000;backdrop-filter:blur(8px);cursor:pointer;transition:background-color 0.3s;margin:0px;padding:0px;box-sizing:border-box;">
+            <div style="animation:20s linear 0s infinite normal none running scrollReverse;display:flex;white-space:nowrap;will-change:transform;margin:0px;padding:0px;box-sizing:border-box;">
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+            </div>
+        </div>
+        
+        <!-- Footer section -->
+        <footer style="position:fixed;bottom:64px;left:50%;transform:translateX(-50%);z-index:20;padding:12px 20px;width: fit-content;min-width:420px;margin:0px;box-sizing:border-box;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin:0px;padding:0px;box-sizing:border-box;">
+                <div style="display:flex;gap:16px;justify-content:center;align-items:center;padding:0px 16px;margin:0px;box-sizing:border-box;">
+                    <a href="https://x.com/WagmiBrosCoin" target="_blank" rel="noopener noreferrer" aria-label="X" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                        <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_X2.png?raw=true" alt="X" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
+                    </a> 
+                    <a href="https://t.me/wagmibroscoin" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                        <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_TG2.png?raw=true" alt="Telegram" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
+                    </a> 
+                    <a href="dex" target="_blank" rel="noopener noreferrer" aria-label="Dex" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                        <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_DEX2.png?raw=true" alt="Dex" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
+                    </a> 
+                    <a href="pumpfun" target="_blank" rel="noopener noreferrer" aria-label="Pump" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                        <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_PUMP2.png?raw=true" alt="Pump" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let accessVideoPlayed = false;
+
+        function enterSite() {
+            if (accessVideoPlayed) return; // Prevent multiple clicks
+            
+            // Add pressed animation to button
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.classList.add('pressed');
+            setTimeout(() => {
+                confirmBtn.classList.remove('pressed');
+            }, 150);
+            
+            // Fade out the "do you want to make it" image and yes button
+            const accessImage = document.querySelector('#accessScreen img[src*="doyouwanttomakeit"]');
+            if (accessImage) {
+                accessImage.style.transition = 'opacity 2s ease-out';
+                accessImage.style.opacity = '0';
+            }
+            
+            // Also fade out the yes button
+            const yesButtonImg = confirmBtn.querySelector('img');
+            if (yesButtonImg) {
+                yesButtonImg.style.transition = 'opacity 2s ease-out';
+                yesButtonImg.style.opacity = '0';
+            }
+            
+            const accessScreen = document.getElementById('accessScreen');
+            const mainContent = document.getElementById('mainContent');
+            const accessVideo = document.getElementById('accessVideo');
+            const mainVideo = document.getElementById('mainVideo');
+            const mainVideoMobile = document.getElementById('mainVideoMobile');
+            const wagmiLogo = document.getElementById('wagmiLogo');
+
+            accessVideoPlayed = true;
+            
+            // Add a short delay before starting the video
+            setTimeout(() => {
+                // Start playing the access video with sound (one time only) at 42.25% volume
+                accessVideo.muted = false;
+                accessVideo.volume = 0.4225; // Reduced by another 35% (65% * 0.65 = 42.25%)
+                accessVideo.currentTime = 0; // Reset to beginning
+                accessVideo.play().catch(e => console.log('Access video play failed:', e));
+            }, 200); // 0.2 second delay
+
+            // Add event listener for when video is near the end to fade out audio
+            accessVideo.addEventListener('timeupdate', function() {
+                const timeLeft = accessVideo.duration - accessVideo.currentTime;
+                
+                // Start fading out audio 2 seconds before the end
+                if (timeLeft <= 2 && timeLeft > 0) {
+                    const fadeProgress = (2 - timeLeft) / 2; // 0 to 1 over 2 seconds
+                    accessVideo.volume = Math.max(0, 0.4225 * (1 - fadeProgress)); // Fade from 42.25% to 0%
+                }
+            });
+
+            // Wait for access video to finish before transitioning
+            accessVideo.addEventListener('ended', function() {
+                accessScreen.style.opacity = '0';
+                accessScreen.style.visibility = 'hidden';
+                accessScreen.style.transform = 'scale(0.98)';
+                
+                setTimeout(() => {
+                    accessScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Trigger fade-in for main content
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                    
+                    // Start playing main video with sound after user interaction
+                    mainVideo.muted = false;
+                    mainVideoMobile.muted = false;
+                    mainVideo.play().catch(e => console.log('Video play failed:', e));
+                    mainVideoMobile.play().catch(e => console.log('Mobile video play failed:', e));
+                    
+                    // Add event listener for video timeupdate to detect when video loops
+                    let lastTime = 0;
+                    mainVideo.addEventListener('timeupdate', function() {
+                        // If current time is less than last time, video has looped
+                        if (this.currentTime < lastTime) {
+                            // Set video to start at 8.3 seconds when it loops
+                            this.currentTime = 8.3;
+                            // Logo stays visible but restarts timed shrink/expand animation
+                            wagmiLogo.style.animation = 'floatLogo 6s ease-in-out infinite, logoTimedShrinkExpand 32.7s ease-in-out infinite';
+                        }
+                        lastTime = this.currentTime;
+                    });
+                    
+                    let lastTimeMobile = 0;
+                    mainVideoMobile.addEventListener('timeupdate', function() {
+                        // If current time is less than last time, video has looped
+                        if (this.currentTime < lastTimeMobile) {
+                            // Set video to start at 8.3 seconds when it loops
+                            this.currentTime = 8.3;
+                            // Logo stays visible but restarts timed shrink/expand animation
+                            wagmiLogo.style.animation = 'floatLogo 6s ease-in-out infinite, logoTimedShrinkExpand 32.7s ease-in-out infinite';
+                        }
+                        lastTimeMobile = this.currentTime;
+                    });
+                    
+                    // Show logo after 8.3 seconds from when main video starts (initial load)
+                    setTimeout(() => {
+                        wagmiLogo.style.opacity = '1';
+                        // Start with timed shrink/expand animation (32.7s = from 8.3s to ~41s video end)
+                        wagmiLogo.style.animation = 'floatLogo 6s ease-in-out infinite, logoTimedShrinkExpand 32.7s ease-in-out infinite';
+                    }, 8300);
+                    
+                    // Show volume control
+                    const volumeControl = document.getElementById('volumeControl');
+                    const volumeSlider = document.getElementById('volumeSlider');
+                    const volumePercent = document.getElementById('volumePercent');
+                    
+                    volumeControl.style.display = 'flex';
+                    
+                    // Volume control functionality
+                    volumeSlider.addEventListener('input', function() {
+                        const volume = this.value / 100;
+                        mainVideo.volume = volume;
+                        mainVideoMobile.volume = volume;
+                        volumePercent.textContent = this.value + '%';
+                        
+                        // Update volume icon
+                        const volumeIcon = volumeControl.querySelector('.volume-icon');
+                        if (volume === 0) {
+                            volumeIcon.textContent = '🔇';
+                        } else if (volume < 0.5) {
+                            volumeIcon.textContent = '🔉';
+                        } else {
+                            volumeIcon.textContent = '🔊';
+                        }
+                    });
+                }, 800);
+            }, { once: true }); // Only listen for the event once
+        }
+    </script>
+</body>
+
+</html>
