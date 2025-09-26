@@ -52,6 +52,7 @@
             border-radius: 2px;
             outline: none;
             cursor: pointer;
+            appearance: none;
             -webkit-appearance: none;
         }
         
@@ -307,104 +308,10 @@
                 transform: translateX(-50%) scale(0.75) !important;
             }
         }
-        
-        /* Password Lock Screen Styles */
-        .password-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            backdrop-filter: blur(10px);
-        }
-        
-        .password-container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        .password-title {
-            color: rgb(255, 215, 0);
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .password-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 10px;
-            color: rgb(255, 215, 0);
-            text-align: center;
-            margin-bottom: 20px;
-            outline: none;
-            letter-spacing: 3px;
-        }
-        
-        .password-input:focus {
-            border-color: rgb(255, 215, 0);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-        
-        .password-btn {
-            background: linear-gradient(45deg, rgb(200, 150, 0), rgb(255, 215, 0));
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            color: black;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .password-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-        }
-        
-        .error-msg {
-            color: #ff4444;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        @media (max-width: 480px) {
-            .password-container {
-                padding: 30px 20px;
-            }
-            .password-title {
-                font-size: 20px;
-            }
-        }
     </style>
 </head>
 
 <body style="cursor: auto;font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;background-color:rgb(0, 0, 0);color:rgb(255, 255, 255);line-height:24px;-webkit-font-smoothing:antialiased;overflow:hidden;min-height:stretch;margin:0px;padding:0px;box-sizing:border-box;">
-    
-    <!-- Password Lock Screen -->
-    <div id="passwordScreen" class="password-screen">
-        <div class="password-container">
-            <div class="password-title">🔐 WAGMI ACCESS</div>
-            <input type="password" id="passwordInput" class="password-input" placeholder="Enter Password" maxlength="10">
-            <button onclick="checkPassword()" class="password-btn">ENTER</button>
-            <div id="errorMsg" class="error-msg" style="display: none;">Incorrect password. Try again.</div>
-        </div>
-    </div>
     
     <!-- Access screen (shown initially) -->
     <div id="accessScreen" style="position:fixed;inset:0px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;z-index:100;transition:0.8s cubic-bezier(0.4, 0, 0.2, 1);padding:32px;min-height:945px;height:945px;width: 100vw;background-color:rgb(17, 24, 39);overflow:hidden;will-change:opacity, transform;margin:0px;box-sizing:border-box;">
@@ -447,18 +354,18 @@
         <!-- Top infinite scroll text -->
         <div role="button" tabindex="0" aria-label="Click to copy text" style="top:0px;border-bottom:1px solid rgba(255, 215, 0, 0.2);position:fixed;width: 100%;height:40px;background:rgba(0, 0, 0, 0.8) none repeat scroll 0% 0% / auto padding-box border-box;overflow:hidden;z-index:1000;backdrop-filter:blur(8px);cursor:pointer;transition:background-color 0.3s;margin:0px;padding:0px;box-sizing:border-box;">
             <div style="display:flex;white-space:nowrap;animation:20s linear 0s infinite normal none running scroll;will-change:transform;margin:0px;padding:0px;box-sizing:border-box;">
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span> 
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span>
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span> 
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
             </div>
         </div>
         
         <!-- Bottom scroll text -->
         <div role="button" tabindex="0" aria-label="Click to copy text" style="bottom:0px;border-top:1px solid rgba(255, 215, 0, 0.2);position:fixed;width: 100%;height:40px;background:rgba(0, 0, 0, 0.8) none repeat scroll 0% 0% / auto padding-box border-box;overflow:hidden;z-index:1000;backdrop-filter:blur(8px);cursor:pointer;transition:background-color 0.3s;margin:0px;padding:0px;box-sizing:border-box;">
             <div style="animation:20s linear 0s infinite normal none running scrollReverse;display:flex;white-space:nowrap;will-change:transform;margin:0px;padding:0px;box-sizing:border-box;">
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span>
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span>
-                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address here</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
+                <span style="display:block;padding:8px 40px;font-family:'Courier New', monospace;font-weight:700;color:rgb(255, 215, 0);text-shadow:rgba(255, 215, 0, 0.5) 0px 0px 10px;font-size:16px;letter-spacing:2px;flex-shrink:0;margin:0px;box-sizing:border-box;">Contact Address not announced!</span>
             </div>
         </div>
         
@@ -472,10 +379,10 @@
                     <a href="https://t.me/wagmibroscoin" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
                         <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_TG2.png?raw=true" alt="Telegram" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
                     </a> 
-                    <a href="https://dexscreener.com/" target="_blank" rel="noopener noreferrer" aria-label="Dex" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                    <a href="dexscreener.link" target="_blank" rel="noopener noreferrer" aria-label="Dex" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
                         <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_DEX2.png?raw=true" alt="Dex" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
                     </a> 
-                    <a href="https://pump.fun/board" target="_blank" rel="noopener noreferrer" aria-label="Pump" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
+                    <a href="pumpfun.link" target="_blank" rel="noopener noreferrer" aria-label="Pump" style="display:flex;align-items:center;justify-content:center;width: 64px;height:64px;border-radius:12px;background:rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;transition:0.3s;will-change:transform, background-color, box-shadow;box-shadow:rgba(255, 215, 0, 0.1) 0px 0px 20px 0px, rgba(255, 215, 0, 0.05) 0px 0px 40px 0px, rgba(255, 215, 0, 0.1) 0px 0px 10px 0px inset;margin:0px;padding:0px;box-sizing:border-box;">
                         <img src="https://github.com/fatfellas/fellawebsite/blob/main/web_icon_PUMP2.png?raw=true" alt="Pump" style="width: 48px;height:48px;object-fit:contain;margin:0px;padding:0px;box-sizing:border-box;" /> 
                     </a>
                 </div>
@@ -484,47 +391,6 @@
     </div>
 
     <script>
-        // Password check function
-        function checkPassword() {
-            const input = document.getElementById('passwordInput');
-            const errorMsg = document.getElementById('errorMsg');
-            const passwordScreen = document.getElementById('passwordScreen');
-            
-            if (input.value === '0214') {
-                // Correct password - hide lock screen with smooth animation
-                passwordScreen.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-                passwordScreen.style.opacity = '0';
-                passwordScreen.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    passwordScreen.style.display = 'none';
-                }, 800);
-            } else {
-                // Wrong password - show error
-                errorMsg.style.display = 'block';
-                input.value = '';
-                input.style.borderColor = '#ff4444';
-                setTimeout(() => {
-                    input.style.borderColor = 'rgba(255, 215, 0, 0.3)';
-                    errorMsg.style.display = 'none';
-                }, 2000);
-            }
-        }
-        
-        // Allow Enter key to submit password
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('passwordInput');
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-            
-            // Focus on password input when page loads
-            setTimeout(() => {
-                passwordInput.focus();
-            }, 500);
-        });
-
         let accessVideoPlayed = false;
 
         function enterSite() {
@@ -664,4 +530,3 @@
 </body>
 
 </html>
-
